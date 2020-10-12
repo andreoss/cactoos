@@ -1,6 +1,7 @@
 <img src="http://cf.jare.io/?u=http%3A%2F%2Fwww.yegor256.com%2Fimages%2Fbooks%2Felegant-objects%2Fcactus.svg" height="100px" />
 
 [![Donate via Zerocracy](https://www.0crat.com/contrib-badge/C63314D6Z.svg)](https://www.0crat.com/contrib/C63314D6Z)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fandreoss%2Fcactoos.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fandreoss%2Fcactoos?ref=badge_shield)
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![Managed by Zerocracy](https://www.0crat.com/badge/C63314D6Z.svg)](https://www.0crat.com/p/C63314D6Z)
@@ -400,3 +401,7 @@ Note: [Checkstyle](https://en.wikipedia.org/wiki/Checkstyle) is used as a static
   - [@fanifieiev](https://github.com/fanifieiev) as Fevzi Anifieiev
   - [@victornoel](https://github.com/victornoel) as Victor Noël
   - [@paulodamaso](https://github.com/paulodamaso) as Paulo Lobo
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fandreoss%2Fcactoos.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fandreoss%2Fcactoos?ref=badge_large)
