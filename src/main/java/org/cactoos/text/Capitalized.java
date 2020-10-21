@@ -23,34 +23,50 @@
  */
 package org.cactoos.text;
 
-import org.cactoos.Scalar;
 import org.cactoos.Text;
+import org.cactoos.scalar.Ternary;
 
 /**
- * Determines if text is blank (consists of spaces) or not.
+ * Text in capitalized case,
+ * changed the first character to title case as per {@link Character#toTitleCase(int)},
+ * no other characters are changed.
  *
- * <p>There is no thread-safety guarantee.
- * @see IsEmpty
- * @since 0.1
+ * @since 0.46
  */
-public final class IsBlank implements Scalar<Boolean> {
+public final class Capitalized extends TextEnvelope {
 
     /**
-     * The text.
+     * Ctor.
+     *
+     * @param text The text
      */
-    private final Text origin;
+    public Capitalized(final String text) {
+        this(new TextOf(text));
+    }
 
     /**
      * Ctor.
      * @param text The text
      */
-    public IsBlank(final Text text) {
-        this.origin = text;
-    }
-
-    @Override
-    public Boolean value() throws Exception {
-        return this.origin.asString().chars()
-            .allMatch(Character::isWhitespace);
+    public Capitalized(final Text text) {
+        super(
+            new TextOf(
+                () -> {
+                    return new Ternary<Text>(
+                        new IsBlank(text),
+                        () -> text,
+                        () -> new Joined(
+                            "",
+                            new TextOf(
+                                Character.toChars(
+                                    Character.toTitleCase(
+                                        text.asString().codePointAt(0)
+                                    )
+                                )
+                            ),
+                            new Sub(text, 1)
+                            )
+                    ).value().asString();
+                }));
     }
 }

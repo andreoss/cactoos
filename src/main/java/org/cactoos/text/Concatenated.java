@@ -23,34 +23,31 @@
  */
 package org.cactoos.text;
 
-import org.cactoos.Scalar;
 import org.cactoos.Text;
+import org.cactoos.iterable.IterableOf;
 
 /**
- * Determines if text is blank (consists of spaces) or not.
+ * Concatenate a Text.
  *
  * <p>There is no thread-safety guarantee.
- * @see IsEmpty
- * @since 0.1
+ *
+ * @since 0.47
  */
-public final class IsBlank implements Scalar<Boolean> {
-
-    /**
-     * The text.
-     */
-    private final Text origin;
+public class Concatenated extends TextEnvelope {
 
     /**
      * Ctor.
-     * @param text The text
+     * @param txts Texts to be concatenated
      */
-    public IsBlank(final Text text) {
-        this.origin = text;
+    public Concatenated(final Text... txts) {
+        this(new IterableOf<Text>(txts));
     }
 
-    @Override
-    public Boolean value() throws Exception {
-        return this.origin.asString().chars()
-            .allMatch(Character::isWhitespace);
+    /**
+     * Ctor.
+     * @param txts Texts to be concatenated
+     */
+    public Concatenated(final Iterable<? extends Text> txts) {
+        super(new Joined(new TextOf(""), txts));
     }
 }

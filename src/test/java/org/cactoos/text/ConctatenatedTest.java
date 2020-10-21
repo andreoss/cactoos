@@ -21,36 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 package org.cactoos.text;
 
-import org.cactoos.Scalar;
-import org.cactoos.Text;
+import org.cactoos.iterable.IterableOf;
+import org.junit.jupiter.api.Test;
+import org.llorllale.cactoos.matchers.Assertion;
+import org.llorllale.cactoos.matchers.TextIs;
 
 /**
- * Determines if text is blank (consists of spaces) or not.
- *
- * <p>There is no thread-safety guarantee.
- * @see IsEmpty
- * @since 0.1
+ * Test case for {@link Concatenated}.
+ * @since 0.47
  */
-public final class IsBlank implements Scalar<Boolean> {
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+final class ConctatenatedTest {
 
-    /**
-     * The text.
-     */
-    private final Text origin;
-
-    /**
-     * Ctor.
-     * @param text The text
-     */
-    public IsBlank(final Text text) {
-        this.origin = text;
+    @Test
+    void contatenateText() {
+        new Assertion<>(
+            "Must contcatenate single text",
+            new Concatenated(new TextOf("bar")),
+            new TextIs("bar")
+        ).affirm();
     }
 
-    @Override
-    public Boolean value() throws Exception {
-        return this.origin.asString().chars()
-            .allMatch(Character::isWhitespace);
+    @Test
+    void contatenateTexts() {
+        new Assertion<>(
+            "Must contcatenate multi texts",
+            new Concatenated(new TextOf("abc"), new TextOf("xyz")),
+            new TextIs("abcxyz")
+        ).affirm();
+    }
+
+    @Test
+    void concatenateIterables() {
+        new Assertion<>(
+            "Must concatenate iterables",
+            new Concatenated(new IterableOf<>(new TextOf("foo"), new TextOf("foo1"))),
+            new TextIs("foofoo1")
+        ).affirm();
     }
 }
