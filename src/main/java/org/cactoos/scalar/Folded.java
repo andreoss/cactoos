@@ -26,6 +26,7 @@ package org.cactoos.scalar;
 import org.cactoos.BiFunc;
 import org.cactoos.Scalar;
 import org.cactoos.iterable.IterableOf;
+import org.cactoos.iterable.Mapped;
 
 /**
  * Iterable, which elements are "folded" through the func.
@@ -39,12 +40,12 @@ public final class Folded<X, T> implements Scalar<X> {
     /**
      * Original iterable.
      */
-    private final Iterable<? extends T> iterable;
+    private final Iterable<? extends Scalar<? extends T>> iterable;
 
     /**
      * Input.
      */
-    private final X input;
+    private final Scalar<? extends X> input;
 
     /**
      * Func.
@@ -71,16 +72,35 @@ public final class Folded<X, T> implements Scalar<X> {
      */
     public Folded(final X ipt, final BiFunc<? super X, ? super T, ? extends X> fnc,
         final Iterable<? extends T> list) {
-        this.iterable = list;
+        this(
+            new Constant<>(ipt),
+            fnc,
+            new Mapped<>(Constant::new, list)
+        );
+    }
+
+
+    /**
+     * Ctor.
+     * @param ipt Input
+     * @param fnc Func original
+     * @param scalars List of items
+     */
+    public Folded(
+        final Scalar<? extends X> ipt,
+        final BiFunc<? super X, ? super T, ? extends X> fnc,
+        final Iterable<? extends Scalar<? extends T>> scalars
+    ) {
+        this.iterable = scalars;
         this.input = ipt;
         this.func = fnc;
     }
 
     @Override
     public X value() throws Exception {
-        X memo = this.input;
-        for (final T item : this.iterable) {
-            memo = this.func.apply(memo, item);
+        X memo = this.input.value();
+        for (final Scalar<? extends T> item : this.iterable) {
+            memo = this.func.apply(memo, item.value());
         }
         return memo;
     }
