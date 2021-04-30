@@ -23,11 +23,11 @@
  */
 package org.cactoos.scalar;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.cactoos.BiFunc;
 import org.cactoos.Scalar;
 import org.cactoos.iterable.Mapped;
+import org.cactoos.iterable.Skipped;
 
 /**
  * Reduces iterable via BiFunc.
@@ -72,17 +72,7 @@ import org.cactoos.iterable.Mapped;
  * @param <T> Scalar type
  * @since 0.30
  */
-public final class Reduced<T> implements Scalar<T> {
-
-    /**
-     * Items.
-     */
-    private final Iterable<? extends Scalar<? extends T>> items;
-
-    /**
-     * Folding function.
-     */
-    private final BiFunc<? super T, ? super T, ? extends T> function;
+public final class Reduced<T> extends ScalarEnvelope<T> {
 
     /**
      * Ctor.
@@ -106,23 +96,22 @@ public final class Reduced<T> implements Scalar<T> {
         final BiFunc<? super T, ? super T, ? extends T> reduce,
         final Iterable<? extends Scalar<? extends T>> scalars
     ) {
-        this.items = scalars;
-        this.function = reduce;
+        super(
+            new Folded<>(
+                new Flattened<>(
+                    new FirstOf<>(
+                        scalars,
+                        () -> {
+                            throw new NoSuchElementException(
+                                "Can't find first element in an empty iterable"
+                            );
+                        }
+                    )
+                ),
+                reduce,
+                new Skipped<>(1, scalars)
+            )
+        );
     }
 
-    @Override
-    public T value() throws Exception {
-        final Iterator<? extends Scalar<? extends T>> iter = this.items.iterator();
-        if (!iter.hasNext()) {
-            throw new NoSuchElementException(
-                "Can't find first element in an empty iterable"
-            );
-        }
-        T acc = iter.next().value();
-        while (iter.hasNext()) {
-            final T next = iter.next().value();
-            acc = this.function.apply(acc, next);
-        }
-        return acc;
-    }
 }
