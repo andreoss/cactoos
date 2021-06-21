@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 import org.cactoos.Scalar;
 import org.cactoos.iterable.IterableOf;
+import org.cactoos.iterable.Mapped;
+import org.cactoos.iterable.RangeOf;
 import org.junit.Test;
 import org.llorllale.cactoos.matchers.Assertion;
 import org.llorllale.cactoos.matchers.HasValue;
@@ -111,6 +113,24 @@ public final class ReducedTest {
                 three
             ),
             new HasValue<>("OneTwoThree")
+        ).affirm();
+    }
+
+    @Test
+    public void reducesToSum() {
+        final Iterable<? extends Scalar<? extends Integer>> scalars =
+            new Mapped<>(
+                Constant::new,
+                new RangeOf<>(
+                    1,
+                    100,
+                    value -> ++value
+                )
+            );
+        new Assertion<>(
+            "Must calculate sum",
+            new Reduced<>(Integer::sum, scalars),
+            new HasValue<>(5048)
         ).affirm();
     }
 }
