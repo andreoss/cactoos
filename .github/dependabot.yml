@@ -1,0 +1,17 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.llorllale:cactoos-matchers
+    versions:
+    - "0.23"
+  - dependency-name: com.jcabi:parent
+    versions:
+    - 0.51.1
+  - dependency-name: org.hamcrest:hamcrest-core
+    versions:
+    - "2.2"
