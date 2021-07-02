@@ -27,7 +27,7 @@ The MIT License (MIT)
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>parent</artifactId>
-    <version>0.51.1</version>
+    <version>0.51.3</version>
   </parent>
   <groupId>org.cactoos</groupId>
   <artifactId>cactoos</artifactId>
